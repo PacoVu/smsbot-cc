@@ -3,7 +3,7 @@ var rc_server = require('./server');
 
 var multer  = require('multer')
 var upload = multer({ dest: 'tempFile/' })
-//var upload = multer()
+
 
 module.exports = function (app) {
 
