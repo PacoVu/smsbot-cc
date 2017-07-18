@@ -14,7 +14,7 @@ npm intall --save
 ```
 - Rename the dotenv to .env and provide your app credentials, RingCentral sandbox account's username and password
 - Replace this "YOUR_WEBSERVER_POST_HOOK_OR_NGROK_FORWARDING" with your webhook address
-*** If you run the app in a localhost, you can use [ngrok](https://gist.github.com/wosephjeber/aa174fb851dfe87e644e) ***
+> If you run the app in a localhost, you can use [ngrok](https://ngrok.com/download)
 
 # RingCentral Developer Portal
 To setup a RingCentral free developer account, click [here](https://developer/ringcentral.com)
