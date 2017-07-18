@@ -1,10 +1,10 @@
 # smsbot-cc
 - Build a currency converter service using RingCentral SMS framework.
 - This demo project shows how to use RingCentral SMS and Push Notification APIs to implement a SMS bot. The bot will listen for incoming SMS text commands then reply to the sender with relevant content.
-- Text commands:
-* __?__ Or __help__ for getting instructions.
-* __symbol/n__ for getting a list of foreign currency symbols, where n is the first alphabet of a country’s name.
-* __base/target__ for getting a current exchange rate, where target is the currency symbol to be quoted against the base currency symbol.
+> Text commands:
+> * __?__ Or __help__ for getting instructions.
+> * __symbol/n__ for getting a list of foreign currency symbols, where n is the first alphabet of a country’s name.
+> * __base/target__ for getting a current exchange rate, where target is the currency symbol to be quoted against the base currency symbol.
 
 # Setup
 ```
