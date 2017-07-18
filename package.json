@@ -1,5 +1,5 @@
 {
-  "name": "SMSBot-Currency Converter",
+  "name": "smsbot-cc",
   "version": "1.0.0",
   "description": "Send SMS to ask for foreign exchange rate.",
   "main": "server.js",
