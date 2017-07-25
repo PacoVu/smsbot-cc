@@ -234,8 +234,8 @@ module.exports = {
    }
 };
 
+// event notification via PubNub
 subscription.on(subscription.events.notification, function(msg) {
-    console.log("thru subscription:")
     parseResponse(msg.body);
 });
 
