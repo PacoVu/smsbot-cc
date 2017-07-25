@@ -1,6 +1,4 @@
 var path = require('path')
-//var util = require('util')
-//var async = require('async')
 
 // Load local environment variables
 if('production' !== process.env.LOCAL_ENV ) require('dotenv').load();

@@ -18,8 +18,12 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <script type="text/javascript">
-      function enableMMS() {
+      function enableMMS(elm) {
+        if (elm.value == "mms" || elm.value == "fax"){
           $('#mmsblock').show();
+        } else {
+          $('#mmsblock').hide();
+        }
       }
     </script>
 </head>
@@ -49,8 +53,9 @@
           <div class="form-group">
             <div class="form-line">
               <span class="msg-label">Message type</span>
-              <select name="msgtype" required onchange="enableMMS()">
+              <select name="msgtype" required onchange="enableMMS(this)">
                 <option value="sms" selected>SMS</option>
+                <!--option value="pager">Pager</option-->
                 <option value="mms">MMS</option>
                 <option value="fax">Fax</option>
               </select>
@@ -68,7 +73,7 @@
               <input type="file" name="attachment" size="30"></input>
             </div>
             <div class="form-line">
-              <button type="submit" class="btn btn-call" id="call">Send</button>
+              <button type="submit" class="btn btn-rc" id="call">Send</button>
             </div>
           </div>
 

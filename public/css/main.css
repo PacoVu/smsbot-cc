@@ -1,6 +1,6 @@
 body {
   font-family: Source Sans Pro,Arial,sans-serif;
-  background-color: #425563;
+  background-color: #0072b3;
   color: white;
   /*padding-left: 12px;
   padding-right: 12px;*/
@@ -23,7 +23,7 @@ h3 {
 }
 
 input, select, textarea{
-    color: black;
+  color: black;
 }
 
 .search {
@@ -31,7 +31,7 @@ input, select, textarea{
 }
 
 .table .table {
-  background-color: #425563;
+  background-color: #0072b3;
 }
 /* Navbar stuff*/
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
@@ -57,7 +57,7 @@ input, select, textarea{
  .dropdown-menu > li > a:focus {
   color: #262626;
  text-decoration: none;
-background-color: #66CCFF;  /*change color of links in drop down here*/
+ background-color: #66CCFF;  /*change color of links in drop down here*/
  }
 
 .nav > li > a:hover,
@@ -69,8 +69,8 @@ background-color: #66CCFF;  /*change color of links in drop down here*/
 
 .navbar-default .navbar-nav > li > a {
   font-size: 16px;
- color: #ff8024; /*Change active text color here*/
-  }
+  color: #ff8024; /*Change active text color here*/
+}
 /* / Navbar stuff*/
 a {
   color: #ff8d6d;
@@ -94,7 +94,7 @@ a {
   padding-right: 12px;
 }
 
-.btn-call {
+.btn-rc {
   background-color: #ff8024;
 }
 

@@ -16,6 +16,8 @@ var rcsdk = new RC({
 
 var platform = rcsdk.platform();
 
+var subscription = rcsdk.createSubscription();
+
 // Login to the RingCentral Platform
 function login() {
     return platform
@@ -37,17 +39,45 @@ login();
 
 module.exports = {
 
-    startSubscription: function (res) {
-       return createSubscription()
-            .then(function () {
-                res.render('index', {
-                    subscriptions: subscriptionList
-                })
-            })
-            .catch(function (e) {
-                console.error(e);
-                throw e;
-            });
+    startPubNubSubscription: function (res) {
+      var _eventFilters = [];
+      _eventFilters.push('/restapi/v1.0/account/~/extension/~/message-store/instant?type=SMS');
+      subscription.setEventFilters(_eventFilters)
+      .register()
+      .then(function(subscriptionResponse) {
+          var subscObj = subscriptionResponse.json();
+          addItemToSubscriptionList(subscObj)
+          res.render('index', {
+              subscriptions: subscriptionList
+          })
+      })
+      .catch(function(e) {
+          console.error(e);
+          throw e;
+      });
+    },
+    startWebhookSubscription: function (res, method) {
+      var _eventFilters = [];
+      _eventFilters.push('/restapi/v1.0/account/~/extension/~/message-store/instant?type=SMS');
+      return platform.post('/subscription',
+      {
+          eventFilters: _eventFilters,
+          deliveryMode: {
+              transportType: process.env.DELIVERY_MODE_TRANSPORT_TYPE,
+              address: process.env.DELIVERY_MODE_ADDRESS
+          }
+      })
+      .then(function(subscriptionResponse) {
+          var subscObj = subscriptionResponse.json();
+          addItemToSubscriptionList(subscObj)
+          res.render('index', {
+              subscriptions: subscriptionList
+          })
+      })
+      .catch(function(e) {
+          console.error(e);
+          throw e;
+      });
     },
     deleteSubscription: function (req, res) {
         for(var item of subscriptionList) {
@@ -94,7 +124,8 @@ module.exports = {
                 body.push(chunk);
             }).on('end', function() {
                 body = Buffer.concat(body).toString();
-                parseResponse(body);
+                var jsonObj = JSON.parse(body)
+                parseResponse(jsonObj.body);
                 res.statusCode = 200;
                 res.end();
             });
@@ -117,6 +148,9 @@ module.exports = {
         .then(function (response) {
             res.redirect('/sendsms')
         });
+    },
+    sendPagerMessage: function (req, res) {
+      // not implemented
     },
     sendMMSMessage: function (req, res) {
       var toNumbers = req.body.tonumber.split(';')
@@ -200,35 +234,10 @@ module.exports = {
    }
 };
 
-
-function bufferToStream(buffer) {
-  let Duplex = require('stream').Duplex;
-  let stream = new Duplex();
-  stream.push(buffer);
-  stream.push(null);
-  return stream;
-}
-
-function createSubscription() {
-    var _eventFilters = [];
-    _eventFilters.push('/restapi/v1.0/account/~/extension/~/message-store/instant?type=SMS');
-    return platform.post('/subscription',
-    {
-        eventFilters: _eventFilters,
-        deliveryMode: {
-            transportType: process.env.DELIVERY_MODE_TRANSPORT_TYPE,
-            address: process.env.DELIVERY_MODE_ADDRESS
-        }
-    })
-    .then(function(subscriptionResponse) {
-        var subscObj = subscriptionResponse.json();
-        addItemToSubscriptionList(subscObj)
-    })
-    .catch(function(e) {
-        console.error(e);
-        throw e;
-    });
-}
+subscription.on(subscription.events.notification, function(msg) {
+    console.log("thru subscription:")
+    parseResponse(msg.body);
+});
 
 function addItemToSubscriptionList(subscObj) {
   var subscription = {}
@@ -252,16 +261,18 @@ function addItemToSubscriptionList(subscObj) {
 function secondsToString(seconds) {
     var numdays = Math.floor(seconds / 86400);
     var numhours = Math.floor((seconds % 86400) / 3600);
-    var numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
-    var numseconds = ((seconds % 86400) % 3600) % 60;
+    var numminutes = td(Math.floor(((seconds % 86400) % 3600) / 60));
+    var numseconds = td(((seconds % 86400) % 3600) % 60);
     return numdays + " days " + numhours + ":" + numminutes + ":" + numseconds;
 }
+function td(n){
+    return n > 9 ? "" + n: "0" + n;
+}
 
-function parseResponse(response) {
-    var jsonObj = JSON.parse(response)
-    var toNumber = jsonObj['body']['from']['phoneNumber'];
-    var command = jsonObj['body']['subject'];
-    // for using with free tier account
+function parseResponse(jsonObj) {
+    var toNumber = jsonObj['from']['phoneNumber'];
+    var command = jsonObj['subject'];
+    // for using with sandbox account
     var watermark = "Test SMS using a RingCentral Developer account - "
     var index = command.indexOf(watermark)
     var payload = command;
@@ -279,7 +290,7 @@ function parseResponse(response) {
                 text: response
             })
             .then(function (response) {
-                var data = response.json();
+                //var data = response.json();
                 //console.log(response);
             });
     } else if (payload.includes('/')) {

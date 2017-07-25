@@ -27,7 +27,7 @@
       <ul class="nav navbar-nav">
         <li><a href="/sendsms">SMS</a></li>
         <li><a href="/about">About</a></li>
-        <!--li><a href="/login">Login</a></li-->
+        <li><a href="/">Refresh page</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="https://www.ringcentral.com" target="_blank">Powered by&nbsp;       <img alt="Brand" src="img/ringcentral.png" height="20"></a></li>
@@ -41,14 +41,13 @@
       <div class="col-xs-12">
         <form action="/startsubscription" method="POST" class="form-inline">
           <div class="form-group">
-            <label for="filter">Filter</label>
-              <select name="filter">
-                <option value="sms">SMS</option>
-                <option value="presence">Presence</option>
-                <option value="glip">Glip</option>
+            <label for="ttype">Transport type</label>
+              <select name="ttype">
+                <option value="webhook" selected>Webhook</option>
+                <option value="pubnub">PubNub</option>
               </select>
           </div>
-          <button type="submit" class="btn btn-call" id="call">Start Subscription</button>
+          <button type="submit" class="btn btn-rc" id="call">Start Subscription</button>
         </form>
       </div>
     </div>

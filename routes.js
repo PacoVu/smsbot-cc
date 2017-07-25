@@ -13,10 +13,12 @@ module.exports = function (app) {
   app.get('/about', function (req, res) {
      res.render('about')
   })
-
   app.post('/startsubscription', function (req, res) {
      console.log("Start a subscription");
-     rc_server.startSubscription(res);
+     if (req.body.ttype == "webhook")
+        rc_server.startWebhookSubscription(res);
+     else
+        rc_server.startPubNubSubscription(res);
   })
 
   app.post('/listsubscription', function (req, res) {
@@ -51,8 +53,10 @@ module.exports = function (app) {
         rc_server.sendMMSMessage(req, res)
      else if (req.body.msgtype == "fax")
         rc_server.sendFAXMessage(req, res);
-     else
+     else if (req.body.msgtype == "sms")
         rc_server.sendSMSMessage(req, res);
+     else
+        rc_server.sendPagerMessage(req, res);
   })
 
 }
